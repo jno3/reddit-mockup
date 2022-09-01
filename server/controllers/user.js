@@ -73,20 +73,9 @@ const loginUser = async (req, res) => {
     }
 }
 
-const auth = (req, res, next) => {
-    const token = req.cookies.token
-    if(!token){
-        return res.status(401).json({success: false});
-    }
-    try{
-        const decoded = jwt.decode(token, process.env.SESSION_SECRET);
-        req.user = decoded;
-        console.log(req.user)
-    }
-    catch(err){
-        res.clearCookie('token');
-        return res.status(400).json({success: false})
-    }
+const logoutUser = async (req, res) => {
+    res.clearCookie('token');
+    return res.status(200).json({ success: true });
 }
 
-export { registerUser, loginUser, auth }
+export { registerUser, loginUser, logoutUser }

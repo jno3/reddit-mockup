@@ -2,6 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { showUser } from "../user/userLoginSlice";
 import authUser from "../auth/authUser";
+import { Link } from "react-router-dom";
 
 export function HomePage() {
 
@@ -11,7 +12,9 @@ export function HomePage() {
         <div>
             CONTENT
             {<div key={user}>{user}</div>}
-            <button onClick={authUser}>CREATE THREAD</button>
+            <Link to='create'>
+                <button>CREATE NEW SUB</button>
+            </Link>
         </div>
     )
 }

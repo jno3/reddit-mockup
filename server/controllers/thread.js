@@ -1,8 +1,8 @@
 import Thread from "../models/Thread.js";
 
 const addThread = async (req, res) => {
-    const data = req.body;
     try {
+        const data = req.body;
         const response = await Thread.create(data);
         return res.status(201).json({ data: response, success: true });
     }

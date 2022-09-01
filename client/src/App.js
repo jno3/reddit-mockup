@@ -4,6 +4,7 @@ import Home from './pages/Home';
 import Register from './pages/Register';
 import Login from './pages/Login';
 import Layout from './pages/Layout';
+import CreateSub from './pages/CreateSub';
 
 // function App() {
 //   return (
@@ -21,6 +22,7 @@ function App() {
           <Route index element={<Home/>}/>
           <Route path='register' element={<Register/>}/>
           <Route path='login' element={<Login/>}/>
+          <Route path='create' element={<CreateSub/>}/>
         </Route>
       </Routes>
     </BrowserRouter>

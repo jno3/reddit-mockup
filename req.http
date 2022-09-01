@@ -26,10 +26,18 @@ POST http://localhost:5000/user/login HTTP/1.1
 Content-Type: application/json
 
 {
-    "username": "j",
+    "username": "jzz",
     "password": "j"
 }
 
 ###
 GET http://localhost:5000/user/login HTTP/1.1
 Content-Type: application/json
+
+###
+POST http://localhost:5000/sub/create HTTP/1.1
+Content-Type: application/json
+
+{
+    "name": "ok ok ok"
+}

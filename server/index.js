@@ -9,6 +9,7 @@ import cookieParser from 'cookie-parser';
 
 import threadRouter from './routes/thread.js';
 import userRouter from './routes/user.js';
+import subRouter from './routes/sub.js'
 // import User from './models/User.js';
 dotenv.config();
 
@@ -40,6 +41,7 @@ app.use(passport.session());
 
 app.use('/thread', threadRouter);
 app.use('/user', userRouter);
+app.use('/sub', subRouter);
 
 await mongoose.connect(process.env.MONGO_URI)
 .then(()=>{

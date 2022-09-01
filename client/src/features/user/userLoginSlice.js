@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from 'axios';
-axios.defaults.withCredentials = true;
+// axios.defaults.withCredentials = true;
 const API_URL = "http://localhost:5000/user/login";
 
 
@@ -36,6 +36,7 @@ export const setUserAsync = (data) => async (dispatch) => {
     } catch (err) {
         console.log(err);
     }
+    document.location.href="/";
 }
 
 export const { setUser, getUser } = userSlice.actions;
