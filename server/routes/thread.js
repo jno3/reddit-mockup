@@ -5,4 +5,5 @@ const router = Router();
 router.route('/').get(getThread).post(addThread);
 
 
+
 export default router;

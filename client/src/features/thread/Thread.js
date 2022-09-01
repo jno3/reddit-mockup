@@ -4,9 +4,11 @@ import { addThreadAsync, showThreads, initializeState } from "./threadSlice";
 
 export function Thread() {
     // const threads = useSelector(showThreads);
-
+    const threads = useSelector(showThreads);
 
     const dispatch = useDispatch();
+
+    
 
     const [newThread, setNewThread] = useState({
         title: '',
@@ -17,10 +19,10 @@ export function Thread() {
         dispatch(addThreadAsync(newThread));
     }
 
-    const threads = useSelector(showThreads);
+    
     useEffect(() => {
         dispatch(initializeState());
-    }, []);
+    }, [dispatch]);
 
     return (
         <div>

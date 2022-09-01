@@ -1,13 +1,32 @@
 import React from 'react';
-import './App.css';
-import { Thread } from './features/thread/Thread';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Home from './pages/Home';
+import Register from './pages/Register';
+import Login from './pages/Login';
+import Layout from './pages/Layout';
+
+// function App() {
+//   return (
+//     <div>
+//       <Thread/>
+//     </div>
+//   );
+// }
 
 function App() {
   return (
-    <div className="App">
-      <Thread/>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<Layout/>}>
+          <Route index element={<Home/>}/>
+          <Route path='register' element={<Register/>}/>
+          <Route path='login' element={<Login/>}/>
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
+
+
 
 export default App;
