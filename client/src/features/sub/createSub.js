@@ -14,10 +14,17 @@ export function CreateSubFeature() {
     const createSub = async () => {
         try {
             // console.log(JSON.parse(localStorage.user).data);
-            await axios.post(API_URL, newSub);
+            const username = JSON.parse(localStorage.getItem('user')).data;
+            const payload = { name: newSub.name, username: username }
+            await axios.post(API_URL, payload);
         }
         catch (err) {
-            tokenLogout(err);
+            try {
+                tokenLogout(err);
+            }
+            catch (err) {
+                alert('you must log in first');
+            }
         }
     }
 

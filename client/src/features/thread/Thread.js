@@ -1,28 +1,40 @@
-import React, { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { addThreadAsync, showThreads, initializeState } from "./threadSlice";
+import React, { useState } from "react";
+import { useParams } from "react-router-dom";
+import axios from "axios";
+import { tokenLogout } from "../auth/authUser";
+// import { useSelector, useDispatch } from "react-redux";
+// import { addThreadAsync, showThreads, initializeState } from "./threadSlice";
+const API_URL = "http://localhost:5000/thread";
+
 
 export function Thread() {
-    // const threads = useSelector(showThreads);
-    const threads = useSelector(showThreads);
-
-    const dispatch = useDispatch();
-
-    
+    const { name } = useParams();
 
     const [newThread, setNewThread] = useState({
         title: '',
         body: ''
     });
 
-    const addNewThread = () => {
-        dispatch(addThreadAsync(newThread));
-    }
 
-    
-    useEffect(() => {
-        dispatch(initializeState());
-    }, [dispatch]);
+    const addNewThread = async () => {
+        try {
+            const payload = {
+                title: newThread.title,
+                body: newThread.body,
+                username: JSON.parse(localStorage.getItem('user')).data,
+                subname: name
+            };
+            await axios.post(API_URL, payload);
+        }
+        catch (err) {
+            try{
+                tokenLogout(err);
+            }
+            catch(err){
+                alert('you must log in first')
+            }
+        }
+    }
 
     return (
         <div>
@@ -34,15 +46,8 @@ export function Thread() {
             <textarea
                 onChange={(e) => setNewThread({ ...newThread, body: e.target.value })}
             />
+            <br />
             <button onClick={addNewThread}>Submit</button>
-            {threads.map((thread) => {
-                return (
-                    <div key={thread._id}>
-                        <p key={`${thread._id}-ttl`}>{thread.title}</p>
-                        <p key={`${thread._id}-bdy`}>{thread.body}</p>
-                    </div>
-                );
-            })}
         </div>
     )
 }

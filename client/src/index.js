@@ -2,6 +2,7 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { store } from './app/store';
+// import authUser, { tokenLogout } from './features/auth/authUser';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import './index.css';
@@ -13,9 +14,9 @@ axios.defaults.withCredentials = true;
 
 
 root.render(
-    <Provider store={store}>
-      <App />
-    </Provider>
+  <Provider store={store}>
+    <App />
+  </Provider>
 );
 
 // If you want to start measuring performance in your app, pass a function

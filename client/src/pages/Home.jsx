@@ -1,5 +1,4 @@
 import React from "react";
-import { Thread } from "../features/thread/Thread";
 import { HomePage } from "../features/homepage/HomePage"
 
 function Home() {

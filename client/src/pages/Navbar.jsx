@@ -8,11 +8,9 @@ function Navbar() {
 
     const logoutFunction = async () => {
         try {
-            await axios.get(API_URL).
-            then(
+            await axios.get(API_URL).then(
                 localStorage.removeItem('user')
-            ).
-            catch((err) => {
+            ).catch((err) => {
                 console.log(err);
             });
             alert('logged out successfully');
