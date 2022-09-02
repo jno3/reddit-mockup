@@ -1,12 +1,14 @@
 import Sub from "../models/Sub.js";
+import Thread from "../models/Thread.js";
 import User from "../models/User.js";
 
 const createSub = async(req, res) => {
     try {
         const {name, username} = req.body;
-        const user = await Sub.findOne({username: username}); 
+        const user = await User.findOne({username: username});
         const data = {name: name, creator: user._id, member: user._id}
         const response = await Sub.create(data);
+        await user.updateOne({ $push: {sub: response}});
         return res.status(201).json({ data: name, success: true });
     }
     catch (err) {
@@ -18,8 +20,13 @@ const createSub = async(req, res) => {
 const getAllThreadsSub = async (req, res) => {
     try{
         const {name} = req.params;
-        const response = await Sub.findOne({name: name});
-        console.log(response)
+        const {thread} = await Sub.findOne({name: name});
+        const response = await Thread.find({
+            '_id': {
+                $in: thread
+            }
+        })
+        return res.status(201).json({ data: response, success: true });
     }
     catch(err){
         console.log(err);
@@ -27,4 +34,15 @@ const getAllThreadsSub = async (req, res) => {
     res.send('aa');
 }
 
-export {createSub, getAllThreadsSub};
+const getAllSubs = async (req, res) => {
+    try{
+        const response = await Sub.find();
+        console.log(response);
+    }
+    catch(err){
+        console.log(err);
+    }
+    res.send('aaa')
+}
+
+export {createSub, getAllThreadsSub, getAllSubs};

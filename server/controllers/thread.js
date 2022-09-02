@@ -6,12 +6,13 @@ import Sub from "../models/Sub.js"
 const addThread = async (req, res) => {
     try {
         const data = req.body;
-        const {username, subname} = data;
-        const user = await User.findOne({username: username});
-        const sub = await Sub.findOne({name: subname});
-        const payload = {title: data.title, body: data.body, creator: user._id, sub: sub._id};
+        const { username, subname } = data;
+        const user = await User.findOne({ username: username });
+        const sub = await Sub.findOne({ name: subname });
+        const payload = { title: data.title, body: data.body, creator: user._id, sub: sub._id };
         const response = await Thread.create(payload);
-        await sub.update({ $push: {thread: response}})
+        await sub.updateOne({ $push: { thread: response } })
+        await user.updateOne({ $push: { thread: response } });
         return res.status(201).json({ data: data, success: true });
     }
     catch (err) {
