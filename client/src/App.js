@@ -7,6 +7,7 @@ import Layout from './pages/Layout';
 import CreateSub from './pages/CreateSub';
 import Sub from './pages/Sub';
 import ThreadForm from './pages/ThreadForm';
+import ThreadPage from './pages/ThreadPage';
 // import authUser, { tokenLogout } from './features/auth/authUser';
 
 // function App() {
@@ -27,8 +28,9 @@ function App() {
           <Route path='register' element={<Register />} />
           <Route path='login' element={<Login />} />
           <Route path='create' element={<CreateSub />} />
-          <Route path='r/:name' element={<Sub />}/>
-          <Route path='r/:name/newthread' element={<ThreadForm />}/>
+          <Route path='r/:subname' element={<Sub />}/>
+          <Route path='r/:subname/newthread' element={<ThreadForm />}/>
+          <Route path='r/:subname/:threadid' element={<ThreadPage />}/>
         </Route>
       </Routes>
     </BrowserRouter>

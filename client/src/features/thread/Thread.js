@@ -2,13 +2,14 @@ import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { tokenLogout } from "../auth/authUser";
+import API_URL from "../../globalvar";
 // import { useSelector, useDispatch } from "react-redux";
 // import { addThreadAsync, showThreads, initializeState } from "./threadSlice";
-const API_URL = "http://localhost:5000/thread";
+// const api = "http://localhost:5000/thread";
 
 
 export function Thread() {
-    const { name } = useParams();
+    const { subname } = useParams();
 
     const [newThread, setNewThread] = useState({
         title: '',
@@ -22,9 +23,9 @@ export function Thread() {
                 title: newThread.title,
                 body: newThread.body,
                 username: JSON.parse(localStorage.getItem('user')).data,
-                subname: name
+                subname: subname
             };
-            await axios.post(API_URL, payload);
+            await axios.post(`${API_URL}/thread`, payload);
         }
         catch (err) {
             try{

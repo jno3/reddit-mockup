@@ -13,6 +13,7 @@ const ThreadSchema = new mongoose.Schema({
     },
     creator: {type: Schema.Types.ObjectId, ref: 'User'},
     sub:  {type: Schema.Types.ObjectId, ref: 'Sub'},
+    comment: [{type: Schema.Types.ObjectId, ref: 'Comment'}]
 });
 
 const Thread = mongoose.model('Thread', ThreadSchema);

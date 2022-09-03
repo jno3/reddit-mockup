@@ -23,7 +23,10 @@ const addThread = async (req, res) => {
 
 const getThread = async (req, res) => {
     try {
-        const response = await Thread.find();
+        const {threadid} = req.params;
+        const thread = await Thread.findOne({_id: threadid});
+        const user = await User.findOne({_id: thread.creator});
+        const response = {title: thread.title, body: thread.body, creator: user.username}
         return res.status(201).json({ data: response, success: true });
     }
     catch (err) {

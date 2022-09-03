@@ -10,7 +10,7 @@ export function SubFeature() {
     const [threads, setThreads] = useState([]);
 
 
-    const { name } = useParams()
+    const { subname } = useParams()
     // const getSubContent = async () => {
     //     const response = await axios.get(`${API_URL}/${name}`);
     //     const data = response.data.data;
@@ -19,23 +19,27 @@ export function SubFeature() {
 
     useEffect(() => {
         const getSubContent = async () => {
-            const response = await axios.get(`${API_URL}/${name}`);
+            const response = await axios.get(`${API_URL}/${subname}`);
             const data = response.data.data;
             setThreads(data);
         }
         getSubContent();
-    }, [name]);
+    }, [subname]);
 
     return (
         <div>
             <br />
-            <Link to={`/r/${name}/newthread`}>
+            <Link to={`/r/${subname}/newthread`}>
                 <button>CREATE THREAD</button>
             </Link>
             {
                 threads.map((item) => {
                     return (
-                        <div key={item._id}>{item.title}</div>
+                        <div key={item._id}>
+                            <Link to={`/r/${subname}/${item._id}`}>
+                                {item.title}
+                            </Link>
+                        </div>
                     )
                 })
             }
