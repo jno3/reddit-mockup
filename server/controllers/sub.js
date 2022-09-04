@@ -46,12 +46,12 @@ const getUserSubs= async (req, res) => {
         const response = subs.map((item) => {
             return item.name;
         })
-        console.log(response)
+        return res.status(200).json({ data: response, success: true });
     }
     catch(err){
         console.log(err)
     }
-    return res.send('aa');
+    return res.status(400).json({ success: false });
 }
 
 const getAllSubs = async (req, res) => {
