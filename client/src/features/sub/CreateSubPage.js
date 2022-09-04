@@ -5,7 +5,7 @@ import { tokenLogout } from "../auth/authUser";
 const API_URL = "http://localhost:5000/sub/create";
 
 
-export function CreateSubFeature() {
+export function CreateSubPage() {
 
     const [newSub, setNewSub] = useState({
         name: ''

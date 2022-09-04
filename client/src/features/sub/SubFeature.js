@@ -21,6 +21,7 @@ export function SubFeature() {
         const getSubContent = async () => {
             const response = await axios.get(`${API_URL}/${subname}`);
             const data = response.data.data;
+            console.log(data)
             setThreads(data);
         }
         getSubContent();
@@ -36,7 +37,7 @@ export function SubFeature() {
                 threads.map((item) => {
                     return (
                         <div key={item._id}>
-                            <Link to={`/r/${subname}/${item._id}`}>
+                            {item.creator_username} | <Link to={`/r/${subname}/${item._id}`}>
                                 {item.title}
                             </Link>
                         </div>

@@ -4,7 +4,8 @@ import axios from 'axios';
 const API_URL = "http://localhost:5000/user/logout";
 
 
-function Navbar() {
+
+export function NavbarPage() {
 
     const logoutFunction = async () => {
         try {
@@ -46,12 +47,10 @@ function Navbar() {
                         </button>
                     </Link>
                 </li>
-                <li>
+                <li className="logout">
                     <button onClick={logoutFunction}>Logout</button>
                 </li>
             </ul>
         </nav>
     );
 }
-
-export default Navbar;

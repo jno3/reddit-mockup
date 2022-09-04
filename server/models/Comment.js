@@ -9,7 +9,8 @@ const CommentSchema = new mongoose.Schema({
     },
     thread: {type: Schema.Types.ObjectId, ref: 'Thread'},
     parent: {type: Schema.Types.ObjectId, ref: 'Comment'},
-    creator: {type: Schema.Types.ObjectId, ref: 'User'}
+    creator: {type: Schema.Types.ObjectId, ref: 'User'},
+    creator_username: String
 });
 
 const Comment = mongoose.model('Comment', CommentSchema);

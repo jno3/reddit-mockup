@@ -83,7 +83,7 @@ export function ThreadFeature() {
                     comments.map((item)=>{
                         return (
                             <div key={item._id}>
-                                {item.body}
+                                {item.creator_username} | {item.body}
                             </div>
                         )
                     })

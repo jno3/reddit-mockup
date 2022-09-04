@@ -12,6 +12,7 @@ const ThreadSchema = new mongoose.Schema({
         required: [true, 'must provide thread body'],
     },
     creator: {type: Schema.Types.ObjectId, ref: 'User'},
+    creator_username: String,
     sub:  {type: Schema.Types.ObjectId, ref: 'Sub'},
     comment: [{type: Schema.Types.ObjectId, ref: 'Comment'}]
 });

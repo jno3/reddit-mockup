@@ -31,7 +31,27 @@ const getAllThreadsSub = async (req, res) => {
     catch(err){
         console.log(err);
     }
-    res.send('aa');
+    return res.status(400).json({ success: false });
+}
+
+const getUserSubs= async (req, res) => {
+    try{
+        const {username} = req.params;
+        const {sub} = await User.findOne({username: username});
+        const subs = await Sub.find({
+            "_id":{
+                $in: sub
+            }
+        });
+        const response = subs.map((item) => {
+            return item.name;
+        })
+        console.log(response)
+    }
+    catch(err){
+        console.log(err)
+    }
+    return res.send('aa');
 }
 
 const getAllSubs = async (req, res) => {
@@ -42,7 +62,7 @@ const getAllSubs = async (req, res) => {
     catch(err){
         console.log(err);
     }
-    res.send('aaa')
+    return res.status(400).json({ success: false });
 }
 
-export {createSub, getAllThreadsSub, getAllSubs};
+export {createSub, getAllThreadsSub, getAllSubs, getUserSubs};
