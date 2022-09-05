@@ -110,7 +110,7 @@ const getUserThreadsAndComments = async (req, res) => {
                 $in: thread
             }
         });
-        
+
         const comments = await Comment.find({
             '_id': {
                 $in: comment
@@ -118,7 +118,7 @@ const getUserThreadsAndComments = async (req, res) => {
         });
         
         const data_threads = threads.map((t) => {
-            return {title: t.title, sub: t.sub_name};
+            return {id: t._id, title: t.title, creator: t.creator_username, sub: t.sub_name};
         });
         
 
