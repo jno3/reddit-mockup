@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { Link } from 'react-router-dom';
 import axios from "axios";
-const API_URL = "http://localhost:5000/user/register"
+import API_URL from "../../globalvar";
 
-
-export function UserRegister() {
+export function UserRegisterPage() {
     const [newUser, setNewUser] = useState({
         username: '',
         password: '',
@@ -13,7 +12,7 @@ export function UserRegister() {
 
     const registerUser = async() => {
         try {
-            await axios.post(API_URL, newUser);
+            await axios.post(`${API_URL}/user/register`, newUser);
         }
         catch (err) {
             console.log(err);

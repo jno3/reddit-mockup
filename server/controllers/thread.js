@@ -9,7 +9,7 @@ const addThread = async (req, res) => {
         const { username, subname } = data;
         const user = await User.findOne({ username: username });
         const sub = await Sub.findOne({ name: subname });
-        const payload = { title: data.title, body: data.body, creator: user._id, creator_username: user.username, sub: sub._id };
+        const payload = { title: data.title, body: data.body, creator: user._id, creator_username: user.username, sub: sub._id, sub_name: subname};
         const response = await Thread.create(payload);
         await sub.updateOne({ $push: { thread: response } })
         await user.updateOne({ $push: { thread: response } });

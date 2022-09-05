@@ -11,12 +11,14 @@ export const authUser = async () => {
     }
 }
 
-export const tokenLogout = (data) => {
-    const response = data;
+export const tokenLogout = async (data) => {
+    const response = await data;
     if (!response.success && response.type === 'timeout') {
         if (localStorage.getItem('user')) {
             localStorage.removeItem('user');
             alert('your session token has expired');
+            return false;
+        }else{
             return false;
         }
     }
@@ -25,7 +27,7 @@ export const tokenLogout = (data) => {
         return false;
     }
     if (!response.success && response.type === 'token') {
-        localStorage.removeItem('user')
+        localStorage.removeItem('user');
         alert('your session token has expired');
         return false;
     }

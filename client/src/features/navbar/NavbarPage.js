@@ -10,18 +10,26 @@ export function NavbarPage() {
     const [subs, setSubs] = useState([]);
 
     const logoutFunction = async () => {
-        try {
-            await axios.get(`${API_URL}/user/logout`).then(
-                localStorage.removeItem('user')
-            ).catch((err) => {
-                console.log(err);
-            });
-            alert('logged out successfully');
-            // document.location.href = "/";
-        }
-        catch (err) {
-            console.log(err);
-        }
+        authUser().then(async (response) => {
+            const r = await tokenLogout(response)
+            if (r){
+                console.log(response)
+                try {
+                    await axios.get(`${API_URL}/user/logout`).then(
+                        localStorage.removeItem('user')
+                    ).catch((err) => {
+                        console.log(err);
+                    });
+                    alert('logged out successfully');
+                    document.location.href = "/";
+                }
+                catch (err) {
+                    console.log(err);
+                }
+            }else{
+                document.location.href = "/";
+            }
+        })
 
     }
 
@@ -42,7 +50,7 @@ export function NavbarPage() {
 
     const getSubs = async () => {
         try {
-            const response = await axios.get(`${API_URL}/sub/getsubs/${JSON.parse(localStorage.getItem('user')).data}`)
+            const response = await axios.get(`${API_URL}/user/getsubs/${JSON.parse(localStorage.getItem('user')).data}`)
             const data = (response.data.data);
             setSubs(data);
         }
@@ -104,7 +112,7 @@ export function NavbarPage() {
                     <div className="dropdown" style={{ display: 'none' }}>
                         {subs.map((item, i) => {
                             return (
-                                <div key={i}>
+                                <div key={`${item}${i}`}>
                                     <a href={`/r/${item}`}>{item}</a>
                                 </div>
                             )

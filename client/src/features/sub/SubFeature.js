@@ -21,7 +21,6 @@ export function SubFeature() {
         const getSubContent = async () => {
             const response = await axios.get(`${API_URL}/${subname}`);
             const data = response.data.data;
-            console.log(data)
             setThreads(data);
         }
         getSubContent();

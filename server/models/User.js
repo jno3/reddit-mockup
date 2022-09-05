@@ -12,6 +12,7 @@ const UserSchema = new mongoose.Schema({
     },
     sub: [{type: Schema.Types.ObjectId, ref: 'Sub'}],
     thread: [{type: Schema.Types.ObjectId, ref: 'Thread'}],
+    comment: [{type: Schema.Types.ObjectId, ref: 'Comment'}]
     
 })
 

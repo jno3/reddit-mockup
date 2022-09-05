@@ -1,7 +1,7 @@
 import Thread from "../models/Thread.js";
 import User from "../models/User.js";
-import Sub from "../models/Sub.js";
 import Comment from "../models/Comment.js";
+import Sub from "../models/Sub.js";
 
 
 const addComment = async (req, res) => {
@@ -9,8 +9,10 @@ const addComment = async (req, res) => {
         const data = req.body;
         const user = await User.findOne({ username: data.username });
         const thread = await Thread.findOne({ _id: data.thread });
-        const response = await Comment.create({ body: data.body, creator: user._id, creator_username: user.username, thread: thread._id });
-        await thread.updateOne({ $push: { comment: response } })
+        const {name} = await Sub.findOne({_id: thread.sub});
+        const response = await Comment.create({ body: data.body, creator: user._id, creator_username: user.username, thread: thread._id, sub_name: name});
+        await thread.updateOne({ $push: { comment: response } });
+        await user.updateOne({ $push: { comment: response } });
         return res.status(201).json({ data: data, success: true });
     }
     catch (err) {
