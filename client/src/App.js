@@ -11,18 +11,7 @@ import { Layout } from './features/layout/Layout';
 import { ProfilePage } from './features/profile/ProfilePage';
 import { NotFoundPage} from './features/notfound/NotFoundPage';
 
-// import authUser, { tokenLogout } from './features/auth/authUser';
-
-// function App() {
-//   return (
-//     <div>
-//       <Thread/>
-//     </div>
-//   );
-// }
-
 function App() {
-
   return (
     <BrowserRouter>
       <Routes>

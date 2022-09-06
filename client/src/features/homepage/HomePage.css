@@ -1,0 +1,66 @@
+.btn-group {
+    display: flex;
+    justify-content: center;
+    border-top: solid;
+    border-bottom: solid;
+    border-width: 1px;
+    border-color: darkcyan;
+}
+
+
+
+.btn-g2 {
+    margin: 0 auto;
+    background-color: papayawhip;
+    text-align: center;
+    border: solid;
+    border-width: 1px;
+    border-color: papayawhip;
+    border-bottom-width: 3px;
+    border-bottom-color: darkcyan;
+    border-top-width: 1px;
+    border-top-color: darkcyan;
+}
+
+.btn-g2:hover {
+    cursor: pointer;
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+.newsub-btn {
+    border-left-color: darkcyan;
+    border-left-width: 2px;
+    border-right-color: darkcyan;
+    border-right-width: 1px;
+    border-bottom-left-radius: 10px;
+}
+
+.profile-btn {
+    border-right-color: darkcyan;
+    border-right-width: 2px;
+    border-left-color: darkcyan;
+    border-left-width: 1px;
+    border-bottom-right-radius: 10px;
+}
+
+.btn-g1 {
+    background-color: honeydew;
+    border: solid;
+    border-color: honeydew;
+}
+
+.btn-g1:focus {
+    margin-top: -1px;
+    margin-bottom: -1px;
+    border-left-width: 2px;
+    border-right-width: 2px;
+    border-top-style: hidden;
+    border-bottom-style: hidden;
+    border-right-color: darkcyan;
+    border-left-color: darkcyan;
+}
+
+.all-btn {
+    margin-right: 3px;
+}

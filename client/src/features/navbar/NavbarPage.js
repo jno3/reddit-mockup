@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import API_URL from "../../globalvar";
 import { authUser, tokenLogout } from "../auth/authUser";
+import './NavbarPage.css';
 
 
 export function NavbarPage() {
@@ -12,7 +13,7 @@ export function NavbarPage() {
     const logoutFunction = async () => {
         authUser().then(async (response) => {
             const r = await tokenLogout(response)
-            if (r){
+            if (r) {
                 console.log(response)
                 try {
                     await axios.get(`${API_URL}/user/logout`).then(
@@ -26,7 +27,7 @@ export function NavbarPage() {
                 catch (err) {
                     console.log(err);
                 }
-            }else{
+            } else {
                 document.location.href = "/";
             }
         })
@@ -79,40 +80,42 @@ export function NavbarPage() {
 
 
     return (
-        <nav>
+        <nav className="nav-bar">
             <ul className="nav-list">
                 <li>
                     <Link to="/">
-                        <button>
+                        <button className="nav-btn">
                             Home
                         </button>
                     </Link>
                 </li>
                 <li className="register">
                     <Link to="/register">
-                        <button>
+                        <button className="nav-btn">
                             Register
                         </button>
                     </Link>
                 </li>
                 <li className="login">
                     <Link to="/login">
-                        <button>
+                        <button className="nav-btn leftmost">
                             Login
                         </button>
                     </Link>
                 </li>
                 <li className="logout">
-                    <button onClick={logoutFunction}>Logout</button>
+                    <button onClick={logoutFunction} className="nav-btn">
+                        Logout
+                    </button>
                 </li>
                 <li className="subs">
-                    <button onClick={dropdownVisibility}>
+                    <button onClick={dropdownVisibility} className="nav-btn leftmost">
                         My Subreddits
                     </button>
                     <div className="dropdown" style={{ display: 'none' }}>
                         {subs.map((item, i) => {
                             return (
-                                <div key={`${item}${i}`}>
+                                <div key={`${item}${i}`} className="ddw-cmp">
                                     <a href={`/r/${item}`}>{item}</a>
                                 </div>
                             )

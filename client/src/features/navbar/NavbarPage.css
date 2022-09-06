@@ -1,0 +1,45 @@
+li{
+    display: inline;
+}
+
+
+nav{
+    background-color: papayawhip;
+    border-left: solid;
+    border-left-width: 1px;
+    border-right: solid;
+    border-right-width: 1px;
+    border-left-color: darkcyan;
+    border-right-color: darkcyan;
+    overflow: auto;
+}
+
+.nav-btn{
+    background-color: honeydew;
+    border: none;
+    cursor: pointer;
+    float: right;
+}
+
+.nav-btn:hover{
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+.leftmost{
+    padding-left: 10px;
+    border-top-left-radius: 7px;
+}
+
+.dropdown{
+    position: absolute;
+    top: 15px;
+    right: 104px;
+    background-color: white;
+    width: 93px;
+    overflow: hidden;
+}
+
+a:hover{
+    font-weight: bold;
+}
