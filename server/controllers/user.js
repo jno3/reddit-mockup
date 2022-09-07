@@ -131,9 +131,32 @@ const getUserThreadsAndComments = async (req, res) => {
         return res.status(200).json({ data: response, success: true });
     }
     catch (err) {
-        console.log(err)
+        console.log(err);
     }
     return res.status(400).json({ success: false });
 }
 
-export { registerUser, loginUser, logoutUser, getUserSubs, getUserThreadsAndComments }
+const getUserHome = async(req, res) => {
+    try{
+        const {username} = req.params;
+        const {sub} = await User.findOne({username: username});
+        const r = await Thread.find({
+            'sub':{
+                $in: sub
+            }
+        }, '-_id -creator -sub -comment');
+
+        const response = r.filter((item) => {
+            return (item.creator_username !== username);
+        })
+
+        // console.log(response)
+        return res.status(200).json({ data: response, success: true });
+    }
+    catch(err){
+        console.log(err);
+    }
+    return res.status(400).json({ success: false });
+}
+
+export { registerUser, loginUser, logoutUser, getUserSubs, getUserThreadsAndComments, getUserHome }

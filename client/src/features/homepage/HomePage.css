@@ -50,7 +50,7 @@
     border-color: honeydew;
 }
 
-.btn-g1:focus {
+.afterclick {
     margin-top: -1px;
     margin-bottom: -1px;
     border-left-width: 2px;
@@ -59,8 +59,4 @@
     border-bottom-style: hidden;
     border-right-color: darkcyan;
     border-left-color: darkcyan;
-}
-
-.all-btn {
-    margin-right: 3px;
 }

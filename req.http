@@ -53,3 +53,7 @@ Content-Type: application/json
 ###
 GET http://localhost:5000/user/profile/j HTTP/1.1
 Content-Type: application/json
+
+###
+GET http://localhost:5000/user/home/j HTTP/1.1
+Content-Type: application/json
