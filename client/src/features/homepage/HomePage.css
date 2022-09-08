@@ -11,11 +11,11 @@
 
 .btn-g2 {
     margin: 0 auto;
-    background-color: papayawhip;
+    background-color: #e6f5e6;
     text-align: center;
     border: solid;
     border-width: 1px;
-    border-color: papayawhip;
+    border-color: #e6f5e6;
     border-bottom-width: 3px;
     border-bottom-color: darkcyan;
     border-top-width: 1px;
@@ -59,4 +59,14 @@
     border-bottom-style: hidden;
     border-right-color: darkcyan;
     border-left-color: darkcyan;
+}
+
+.home-data {
+    overflow: hidden;
+    border: solid;
+    border-top-style: hidden;
+    border-color: darkcyan;
+    border-width: 1px;
+    background-color: #e6f5e6;
+    /* overflow: auto; */
 }

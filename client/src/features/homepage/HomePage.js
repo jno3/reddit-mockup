@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import './HomePage.css';
 import axios from 'axios';
 import API_URL from '../../globalvar';
+import { authUser, tokenLogout } from "../auth/authUser";
+import { HomeComponent } from "./HomeComponent";
 
 export function HomePage() {
 
@@ -10,7 +12,11 @@ export function HomePage() {
         all: [],
         all_loaded: false,
         home: [],
-        home_loaded: false
+        home_loaded: false,
+    });
+
+    const [logged, setLogged] = useState({
+        logged: false
     });
 
     var user;
@@ -25,6 +31,12 @@ export function HomePage() {
             document.querySelector('.newsub-btn').style.display = 'inline';
         }
         document.querySelector('.all-btn').click();
+
+        tokenLogout(authUser()).then((response) => {
+            setLogged({
+                logged: response
+            })
+        });
 
     }, [user]);
 
@@ -47,11 +59,12 @@ export function HomePage() {
                 })
             });
         }
+        document.querySelector('.all-data').style.display = 'block';
+        document.querySelector('.home-data').style.display = 'none';
     }
 
     const getHomeData = async () => {
         const response = await axios.get(`${API_URL}/user/home/j`);
-        console.log(response.data.data);
         return response.data.data;
     }
 
@@ -60,7 +73,7 @@ export function HomePage() {
         const all = document.querySelector('.all-btn');
         all.classList.remove('afterclick');
         home.classList.add('afterclick');
-        if(!threads.home_loaded){
+        if (!threads.home_loaded) {
             getHomeData().then((response) => {
                 setThreads({
                     ...threads,
@@ -69,28 +82,42 @@ export function HomePage() {
                 })
             });
         }
+        document.querySelector('.all-data').style.display = 'none';
+        document.querySelector('.home-data').style.display = 'block';
     }
 
 
     return (
-        <div className="btn-group">
-            <button className="personal-btn btn-g1" style={{ display: 'none' }} onClick={getHome}>
-                HOME
-            </button>
-            <button className="all-btn btn-g1" onClick={getAll}>
-                ALL
-            </button>
-            <Link to='create'>
-                <button className="newsub-btn btn-g2" style={{ display: 'none' }}>
-                    CREATE NEW SUB
+        <div>
+            <div className="btn-group">
+                <button className="personal-btn btn-g1" style={{ display: 'none' }} onClick={getHome}>
+                    HOME
                 </button>
-            </Link>
-            <Link to={`/u/${user}`} /*className="profile-btn"*/>
-                <button className="profile-btn btn-g2" style={{ display: 'none' }}>
-                    {user}
+                <button className="all-btn btn-g1" onClick={getAll}>
+                    ALL
                 </button>
-            </Link>
-            <br />
+                <Link to='create'>
+                    <button className="newsub-btn btn-g2" style={{ display: 'none' }}>
+                        CREATE NEW SUB
+                    </button>
+                </Link>
+                <Link to={`/u/${user}`} /*className="profile-btn"*/>
+                    <button className="profile-btn btn-g2" style={{ display: 'none' }}>
+                        {user}
+                    </button>
+                </Link>
+                <br />
+            </div>
+            <div className="all-data">
+                a
+            </div>
+            <div className="home-data" style={{ display: 'none' }}>
+                {logged.logged ? (
+                    HomeComponent(threads.home)
+                ) : (
+                    ''
+                )}
+            </div>
         </div>
     )
 }

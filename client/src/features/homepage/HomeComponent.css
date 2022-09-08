@@ -1,0 +1,17 @@
+.single-item {
+    margin-bottom: -1px;
+    margin-top: 30px;
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-bottom: 30px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    background-color: #F3FFF3;
+    border-radius: 10px;
+}
+
+a{
+    text-decoration: none;
+    color: darkcyan;
+}

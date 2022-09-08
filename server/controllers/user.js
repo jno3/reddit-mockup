@@ -144,7 +144,7 @@ const getUserHome = async(req, res) => {
             'sub':{
                 $in: sub
             }
-        }, '-_id -creator -sub -comment');
+        }, '-creator -sub -comment');
 
         const response = r.filter((item) => {
             return (item.creator_username !== username);

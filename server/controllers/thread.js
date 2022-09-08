@@ -37,7 +37,7 @@ const getThread = async (req, res) => {
 
 const getAllThreads = async (req, res) => {
     try {
-        const data = await Thread.find({}, '-_id -creator -sub -comment');
+        const data = await Thread.find({}, '-creator -sub -comment');
         return res.status(201).json({ data: data, success: true });
     }
     catch (err) {
