@@ -1,0 +1,19 @@
+.profile-comp {
+    display: block;
+    margin-bottom: -1px;
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-bottom: 30px;
+    background-color: #F3FFF3;
+    border-radius: 10px;
+}
+
+.thread-comp {
+    overflow-wrap: break-word;
+}
+
+.comm-comp {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

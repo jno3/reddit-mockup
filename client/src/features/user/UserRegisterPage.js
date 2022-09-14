@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from 'react-router-dom';
 import axios from "axios";
 import API_URL from "../../globalvar";
+import './Forms.css';
 
 export function UserRegisterPage() {
     const [newUser, setNewUser] = useState({
@@ -10,7 +11,7 @@ export function UserRegisterPage() {
         confirm: '',
     });
 
-    const registerUser = async() => {
+    const registerUser = async () => {
         try {
             await axios.post(`${API_URL}/user/register`, newUser);
         }
@@ -20,26 +21,28 @@ export function UserRegisterPage() {
     }
 
     return (
-        <div>
-            Email
-            <input
-                onChange={(e) => setNewUser({...newUser, username: e.target.value})}
-            />
-            <br />
-            Password
-            <input
-                onChange={(e) => setNewUser({...newUser, password: e.target.value})}
-            />
-            <br />
-            Confirm Password
-            <input
-                onChange={(e) => setNewUser({...newUser, confirm: e.target.value})}
-            />
-            <br />
-            <button onClick={registerUser}>Confirm</button>
-            <Link to='/'>
-                <button>Back</button>
-            </Link>
+        <div className="user-page">
+            <div className="user-form">
+                <div className="user-input">
+                    <input
+                        onChange={(e) => setNewUser({ ...newUser, username: e.target.value })}
+                    placeholder="Username"/>
+                    <br />
+                    <input
+                        onChange={(e) => setNewUser({ ...newUser, password: e.target.value })}
+                    placeholder="Password" type="password"/>
+                    <br />
+                    <input
+                        onChange={(e) => setNewUser({ ...newUser, confirm: e.target.value })}
+                    placeholder="Confirm Password" type="password"/>
+                </div>
+                <div className="container-btn">
+                    <button onClick={registerUser}>Register</button>
+                    <Link to='/'>
+                        <button>Back</button>
+                    </Link>
+                </div>
+            </div>
         </div>
     )
 }

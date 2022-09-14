@@ -1,4 +1,4 @@
-.btn-group {
+.home-page .btn-group {
     display: flex;
     justify-content: center;
     border-top: solid;
@@ -7,9 +7,7 @@
     border-color: darkcyan;
 }
 
-
-
-.btn-g2 {
+.home-page .btn-g2 {
     margin: 0 auto;
     background-color: #e6f5e6;
     text-align: center;
@@ -22,13 +20,13 @@
     border-top-color: darkcyan;
 }
 
-.btn-g2:hover {
+.home-page .btn-g2:hover {
     cursor: pointer;
     text-decoration: underline;
     font-weight: bold;
 }
 
-.newsub-btn {
+.home-page .newsub-btn {
     border-left-color: darkcyan;
     border-left-width: 2px;
     border-right-color: darkcyan;
@@ -36,7 +34,7 @@
     border-bottom-left-radius: 10px;
 }
 
-.profile-btn {
+.home-page .profile-btn {
     border-right-color: darkcyan;
     border-right-width: 2px;
     border-left-color: darkcyan;
@@ -44,13 +42,13 @@
     border-bottom-right-radius: 10px;
 }
 
-.btn-g1 {
+.home-page .btn-g1 {
     background-color: honeydew;
     border: solid;
     border-color: honeydew;
 }
 
-.afterclick {
+.home-page .afterclick {
     margin-top: -1px;
     margin-bottom: -1px;
     border-left-width: 2px;
@@ -61,7 +59,7 @@
     border-left-color: darkcyan;
 }
 
-.home-data {
+.home-page .home-data, .all-data {
     overflow: hidden;
     border: solid;
     border-top-style: hidden;

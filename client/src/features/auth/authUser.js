@@ -34,3 +34,7 @@ export const tokenLogout = async (data) => {
     return true;
     // document.location.href = "/";
 }
+
+export const checkSub = async(data) => {
+
+}

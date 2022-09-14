@@ -1,0 +1,46 @@
+.sub-page-container{
+    display: block;
+    border: solid;
+    border-width: 1px;
+    border-color: darkcyan;
+}
+
+.sub-page-container .sub-nav{
+    margin-left: 2.5%;
+    display: inline-block;
+    border: solid;
+    border-width: 1px;
+    border-color: darkcyan;
+    margin-top: -1px;
+    background-image: linear-gradient(#e6f5e6, honeydew);
+    border-top-color: #e6f5e6;
+    margin-bottom: 15px;
+}
+
+.sub-page-container button{
+    border: solid;
+    border-width: 1px;
+    border-color: darkcyan;
+    border-top: none;
+    margin-bottom: -1px;
+    border-right: none;
+    border-left: none;
+    background-color: rgba(0, 0, 0, 0);
+    width: 100%;
+}
+
+.sub-page-container button:hover{
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.sub-page-container .single-comp{
+    margin-top: 30px;
+    margin-bottom: 30px;
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+.sub-page-container a{
+    overflow-wrap: break-word;
+}

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from 'react-router-dom';
 import axios from "axios";
 import { tokenLogout } from "../auth/authUser";
+import './Forms.css'
 const API_URL = "http://localhost:5000/sub/create";
 
 
@@ -28,18 +29,27 @@ export function CreateSubPage() {
         }
     }
 
+    const createSubClick = () => {
+        createSub().then(() => {
+            window.location.href=`/r/${newSub.name}`
+        })
+    }
+
     return (
-        <div>
-            Subreddit Name
-            <br />
-            <input
-                onChange={(e) => setNewSub({ ...newSub, name: e.target.value })}
-            />
-            <br />
-            <button onClick={createSub}>Confirm</button>
-            <Link to='/'>
-                <button>Back</button>
-            </Link>
+        <div className="create-sub-page">
+            <div className="user-form">
+                <div className="user-input">
+                    <input
+                        onChange={(e) => setNewSub({ ...newSub, name: e.target.value })}
+                    placeholder="New Subreddit Name"/>
+                </div>
+                <div className="container-btn">
+                    <button onClick={createSubClick}>Confirm</button>
+                    <Link to='/'>
+                        <button>Back</button>
+                    </Link>
+                </div>
+            </div>
         </div>
     )
 }

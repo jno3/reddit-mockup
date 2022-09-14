@@ -1,0 +1,30 @@
+.thread-container .thread-title {
+    border: solid;
+    border-top: none;
+    border-width: 1px;
+    border-color: darkcyan;
+    background-image: linear-gradient(#e6f5e6, honeydew);
+    margin-bottom: 30px;
+    padding-left: 2.5%;
+    padding-bottom: 1%;
+    overflow-wrap: break-word;
+}
+
+.thread-container .thread-content{
+    border-bottom: solid;
+    border-width: 1px;
+    border-color: darkcyan;
+    padding-bottom: 30px;
+    margin-bottom: 15px;
+    padding-left: 5%;
+    padding-right: 5%;
+    overflow-wrap: break-word;
+}
+
+.thread-container button{
+    margin-bottom: 30px;
+}
+
+.thread-container .comment-single{
+    margin-bottom: 15px;
+}

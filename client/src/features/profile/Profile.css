@@ -1,0 +1,42 @@
+.profile-page {
+    display: block;
+    border-top: solid;
+    border-top-width: 1px;
+    border-top-color: #e6f5e6;
+}
+
+.profile-page .user{
+    background-image: linear-gradient(#e6f5e6, honeydew);
+    /* background-color: yellow; */
+    border: solid;
+    border-width: 1px;
+    border-color: darkcyan;
+    border-top: none;
+    padding-left: 15px;
+}
+
+.profile-page .btn{
+    margin-left: 5px;
+    background-color: honeydew;
+    border-bottom-color: darkcyan;
+    border-width: 1px;
+    margin-bottom: -1px;
+}
+
+.profile-page .afterclick{
+    font-weight: bold;
+    border: solid;
+    border-width: 1px;
+    border-bottom-color: #e6f5e6;
+    background-image: linear-gradient(honeydew, #e6f5e6);
+
+}
+
+.profile-page .content{
+    background-color: #e6f5e6;
+    padding-top: 30px;
+    border: solid;
+    border-top: none;
+    border-width: 1px;
+}
+

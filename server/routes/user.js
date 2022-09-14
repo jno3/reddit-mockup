@@ -5,7 +5,9 @@ import {
     logoutUser,
     getUserSubs,
     getUserThreadsAndComments, 
-    getUserHome
+    getUserHome,
+    checkSub,
+    joinSub
 } from "../controllers/user.js";
 
 import { auth } from '../auth/auth.js'
@@ -17,6 +19,8 @@ router.route('/logout').get(logoutUser);
 router.route('/home/:username').get(getUserHome);
 router.route('/getsubs/:username').get(getUserSubs);
 router.route('/profile/:username').get(getUserThreadsAndComments);
+router.route('/checksub/:username/:subname').get(checkSub);
+router.route('/join').post(joinSub)
 router.route('/auth').all(auth);
 
 export default router;

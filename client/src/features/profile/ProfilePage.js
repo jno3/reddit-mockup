@@ -8,7 +8,7 @@ import { CommentComponent } from "./CommentComponent";
 
 import { authUser, tokenLogout } from "../auth/authUser";
 import API_URL from "../../globalvar";
-
+import './Profile.css';
 
 
 export function ProfilePage() {
@@ -46,40 +46,53 @@ export function ProfilePage() {
                 });
             });
         });
+        document.getElementById('t-btn').click();
     }, [username]);
 
     const showThreads = () => {
         document.querySelector('.threads').style.display = 'block';
         document.querySelector('.comments').style.display = 'none';
+        const t = document.getElementById('t-btn');
+        t.classList.add('afterclick');
+        const c = document.getElementById('c-btn');
+        c.classList.remove('afterclick');
     }
 
     const showComments = () => {
         document.querySelector('.threads').style.display = 'none';
         document.querySelector('.comments').style.display = 'block';
+        const c = document.getElementById('c-btn');
+        c.classList.add('afterclick');
+        const t = document.getElementById('t-btn');
+        t.classList.remove('afterclick');
     }
 
     return (
-        <div>
-            <h1>{username}'s profile</h1>
-            <button onClick={showThreads}>
-                Threads
-            </button>
-            <button onClick={showComments}>
-                Comments
-            </button>
-            <div className="threads" style={{display: 'block'}}>
-                {data.loaded ? (
-                    ThreadComponent(data.logged, data.threads)
-                ): (
-                    ''
-                )}
+        <div className="profile-page">
+            <div className="user">
+                <h1>{username}'s Profile</h1>
+                <button onClick={showThreads} id="t-btn" className="btn">
+                    Threads
+                </button>
+                <button onClick={showComments} id="c-btn" className="btn">
+                    Comments
+                </button>
             </div>
-            <div className="comments" style={{display: 'none'}}>
-                {data.loaded ? (
-                    CommentComponent(data.logged, data.comments)
-                ): (
-                    ''
-                )}
+            <div className="content">
+                <div style={{ display: 'block' }} className="threads">
+                    {data.loaded ? (
+                        ThreadComponent(data.logged, data.threads)
+                    ) : (
+                        ''
+                    )}
+                </div>
+                <div style={{ display: 'none' }} className="comments">
+                    {data.loaded ? (
+                        CommentComponent(data.logged, data.comments)
+                    ) : (
+                        ''
+                    )}
+                </div>
             </div>
         </div>
     );

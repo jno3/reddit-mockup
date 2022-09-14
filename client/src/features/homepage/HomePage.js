@@ -5,6 +5,7 @@ import axios from 'axios';
 import API_URL from '../../globalvar';
 import { authUser, tokenLogout } from "../auth/authUser";
 import { HomeComponent } from "./HomeComponent";
+import { AllComponent } from "./AllComponent";
 
 export function HomePage() {
 
@@ -64,7 +65,7 @@ export function HomePage() {
     }
 
     const getHomeData = async () => {
-        const response = await axios.get(`${API_URL}/user/home/j`);
+        const response = await axios.get(`${API_URL}/user/home/${JSON.parse(localStorage.getItem('user')).data}`);
         return response.data.data;
     }
 
@@ -88,7 +89,7 @@ export function HomePage() {
 
 
     return (
-        <div>
+        <div className="home-page">
             <div className="btn-group">
                 <button className="personal-btn btn-g1" style={{ display: 'none' }} onClick={getHome}>
                     HOME
@@ -109,7 +110,11 @@ export function HomePage() {
                 <br />
             </div>
             <div className="all-data">
-                a
+                {logged.logged ? (
+                    AllComponent(threads.all, JSON.parse(localStorage.getItem('user')).data)
+                ) : (
+                    AllComponent(threads.all)
+                )}
             </div>
             <div className="home-data" style={{ display: 'none' }}>
                 {logged.logged ? (

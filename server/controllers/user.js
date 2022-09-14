@@ -104,7 +104,7 @@ const getUserSubs = async (req, res) => {
 const getUserThreadsAndComments = async (req, res) => {
     try {
         const { username } = req.params;
-        const {thread, comment} = await User.findOne({ username: username });
+        const { thread, comment } = await User.findOne({ username: username });
         const threads = await Thread.find({
             '_id': {
                 $in: thread
@@ -116,17 +116,17 @@ const getUserThreadsAndComments = async (req, res) => {
                 $in: comment
             }
         });
-        
+
         const data_threads = threads.map((t) => {
-            return {id: t._id, title: t.title, creator: t.creator_username, sub: t.sub_name};
+            return { id: t._id, title: t.title, creator: t.creator_username, sub: t.sub_name };
         });
-        
+
 
         const data_comments = comments.map((c) => {
-            return {body: c.body, sub_name: c.sub_name, thread: c.thread};
+            return { body: c.body, sub_name: c.sub_name, thread: c.thread };
         });
 
-        const response = {threads: data_threads, comments: data_comments};
+        const response = { threads: data_threads, comments: data_comments };
 
         return res.status(200).json({ data: response, success: true });
     }
@@ -136,12 +136,12 @@ const getUserThreadsAndComments = async (req, res) => {
     return res.status(400).json({ success: false });
 }
 
-const getUserHome = async(req, res) => {
-    try{
-        const {username} = req.params;
-        const {sub} = await User.findOne({username: username});
+const getUserHome = async (req, res) => {
+    try {
+        const { username } = req.params;
+        const { sub } = await User.findOne({ username: username });
         const r = await Thread.find({
-            'sub':{
+            'sub': {
                 $in: sub
             }
         }, '-creator -sub -comment');
@@ -153,10 +153,60 @@ const getUserHome = async(req, res) => {
         // console.log(response)
         return res.status(200).json({ data: response, success: true });
     }
-    catch(err){
+    catch (err) {
         console.log(err);
     }
     return res.status(400).json({ success: false });
 }
 
-export { registerUser, loginUser, logoutUser, getUserSubs, getUserThreadsAndComments, getUserHome }
+const checkSub = async (req, res) => {
+    try {
+        const { username, subname } = req.params;
+        const { sub } = await User.findOne({ username: username });
+        const r = await Sub.find({
+            '_id': {
+                $in: sub
+            }
+        }, 'name')
+        const names = r.map((item) => {
+            return item.name;
+        })
+        const response = names.includes(subname);
+        return res.status(200).json({ data: response, success: true });
+    }
+    catch (err) {
+        console.log(err);
+    }
+    return res.status(400).json({ success: false });
+}
+
+const joinSub = async (req, res) => {
+    try {
+        const { username, subname, join } = req.body;
+        const user = await User.findOne({ username: username });
+        const sub = await Sub.findOne({ name: subname });
+        if (join) {
+            await user.updateOne({ $push: { sub: sub._id } });
+            await sub.updateOne({ $push: { member: user._id } });
+        } else {
+            await user.updateOne({ $pull: { sub: sub._id } });
+            await sub.updateOne({ $pull: { member: user._id } });
+        }
+        return res.status(200).json({ success: true });
+    }
+    catch (err) {
+        console.log(err)
+    }
+    return res.status(400).json({ success: false });
+}
+
+export {
+    registerUser,
+    loginUser,
+    logoutUser,
+    getUserSubs,
+    getUserThreadsAndComments,
+    getUserHome,
+    checkSub,
+    joinSub
+}
