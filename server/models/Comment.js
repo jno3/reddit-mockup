@@ -10,7 +10,7 @@ const CommentSchema = new mongoose.Schema({
     thread: {type: Schema.Types.ObjectId, ref: 'Thread'},
     parent: {type: Schema.Types.ObjectId, ref: 'Comment'},
     creator: {type: Schema.Types.ObjectId, ref: 'User'},
-    child: {type: Schema.Types.ObjectId, ref: 'Comment'},
+    child: [{type: Schema.Types.ObjectId, ref: 'Comment'}],
     creator_username: String,
     sub_name: String,
 });
