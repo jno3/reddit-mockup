@@ -50,6 +50,19 @@ const getComments = async (req, res) => {
                 $in: comment
             },
         })
+
+        response.forEach(async (comm) => {
+            await Comment.find({
+                '_id': {
+                    $in: comm.child
+                }
+            }).then((nchild) => {
+                comm.child = nchild;
+                // console.log(comm);
+            })
+            // console.log(comm);
+        })
+        
         return res.status(201).json({ data: response, success: true });
     }
     catch (err) {

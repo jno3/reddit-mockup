@@ -1,17 +1,37 @@
 export default function CommentComponent({ item }) {
-    console.log(item)
-    if(item.length !== undefined){
+    if (Array.isArray(item)) {
         item.forEach((obj) => {
-            return <CommentComponent item={obj}/>
+            if (obj.length === undefined) {
+                console.log(obj);
+                return (
+                    <div>
+                        {obj.body}
+                    </div>
+                )
+            } else {
+                return <CommentComponent item={obj}/>;
+            }
         })
-    }else{
-        return (
-            <div>
-                {item[0].body}
-            </div>
-        )
     }
 }
+
+
+
+
+// if(Array.isArray(item)){
+//     item.forEach((obj) => {
+//         if(obj.length === undefined){
+//             console.log(obj);
+//             return(
+//                 <div>
+//                     {obj.body}
+//                 </div>
+//             )
+//         }else{
+//             arrangeComments(obj);
+//         }
+//     })
+// }
 
 // if (item.length > 1) {
 //     item.forEach((obj) => {

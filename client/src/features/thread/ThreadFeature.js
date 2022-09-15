@@ -26,28 +26,6 @@ export function ThreadFeature() {
         creator: ''
     });
 
-
-    const sortComments = (arr, list, item) => {
-        var localarr = arr;
-        var locallist = list;
-        var localitem = item;
-        locallist.push(localitem);
-        if (localitem.child) {
-            var templist = []
-            localitem.child.forEach((outeritem) => {
-                const temp = (localarr.filter((item, index) => {
-                    if (item._id === outeritem) {
-                        var tempitem = item;
-                        localarr.splice(index, 1);
-                        return tempitem;
-                    }
-                }))
-                sortComments(localarr, locallist, temp);
-            });
-        }
-        return locallist;
-    }
-
     useEffect(() => {
         const getThreadContent = async () => {
             const response = await axios.get(`${API_URL}/thread/${threadid}`);
@@ -59,11 +37,9 @@ export function ThreadFeature() {
         const getCommentsContent = async () => {
             const response = await axios.get(`${API_URL}/com/${threadid}`);
             const data = response.data.data;
-            const r = data.map((item) => {
-                return sortComments(data, [], item);
-            })
-            setComments(r);
+            setComments(data);
         }
+
         getCommentsContent();
         tokenLogout(authUser()).then((response) => {
             setLogged(response);
@@ -126,43 +102,6 @@ export function ThreadFeature() {
         replyFunctionAppearence(index, 'undo');
     }
 
-    const arrangeCommentsHelp = (item) => {
-        if (item.length > 1) {
-            item.forEach((obj) => {
-                if (!Array.isArray(obj)) {
-                    return (
-                        <div>
-                            {obj.body}
-                        </div>
-                    )
-                }
-                arrangeCommentsHelp(obj);
-            })
-        } else {
-            return (
-                <div>
-                    {item[0].body}
-                </div>
-            )
-        }
-
-    }
-
-    const arrangeComments = () => {
-        const comms = comments.filter((value) => {
-            return value !== null;
-        })
-        return (
-            comms.map((item, index) => {
-                return (
-                    <div key={`comment${index}`}>
-                        {arrangeCommentsHelp(item)}
-                    </div>
-                )
-            })
-        );
-    }
-
 
     return (
         <div className="thread-container">
@@ -188,16 +127,6 @@ export function ThreadFeature() {
 
             <div>
 
-                {
-                    comments.map((item, i) => {
-                        if (item !== null) {
-                            return (
-                                <CommentComponent item={item} key={i}/>
-                            )
-                        }
-                    })
-                    // arrangeComments()
-                }
                 {/* {
                     comments.map((item, i) => {
                         return (

@@ -47,7 +47,7 @@ GET http://localhost:5000/sub/number1 HTTP/1.1
 Content-Type: application/json
 
 ###
-GET http://localhost:5000/thread/63126b26a7974f79708127e5 HTTP/1.1
+GET http://localhost:5000/com/6322152351cc577a3b2a5581 HTTP/1.1
 Content-Type: application/json
 
 ###
