@@ -4,6 +4,7 @@ import Comment from "../models/Comment.js";
 import Sub from "../models/Sub.js";
 
 
+
 const addComment = async (req, res) => {
     try {
         const data = req.body;
@@ -28,10 +29,10 @@ const addSubComment = async (req, res) => {
         const thread = await Thread.findOne({ _id: data.thread });
         const parent = await Comment.findOne({ _id: data.parent });
         const { name } = await Sub.findOne({ _id: thread.sub });
-        const response = await Comment.create({ body: data.body, creator: user._id, creator_username: user.username, thread: thread._id, sub_name: name });
+        const response = await Comment.create({ body: data.body, creator: user._id, creator_username: user.username, parent: parent._id, /*thread: thread._id, */sub_name: name });
         await parent.updateOne({ $push: { child: response._id } });
-        await thread.updateOne({ $push: { comment: response } });
-        await user.updateOne({ $push: { comment: response } });
+        // await thread.updateOne({ $push: { comment: response } });
+        await user.updateOne({ $push: { comment: response._id } });
         return res.status(201).json({ success: true });
         // return res.status(201).send('aaa');
     }
@@ -39,6 +40,27 @@ const addSubComment = async (req, res) => {
         console.log(err);
     }
     return res.status(400).json({ success: false });
+}
+
+const recursiveComments = async(item) => {
+    // console.log(item)
+    if(item.child){
+        const children = await Comment.find({
+            '_id': {
+                $in: item.child
+            },
+        })
+        await Promise.all(children.map( async (child) => {
+            const chd = JSON.parse(JSON.stringify(child));
+            chd.nchild = [];
+            // console.log(item)
+            // console.log(child)
+            item.nchild.push(chd);
+            return await recursiveComments(chd);
+        }))
+    }
+    return item;
+    
 }
 
 const getComments = async (req, res) => {
@@ -51,19 +73,13 @@ const getComments = async (req, res) => {
             },
         })
 
-        response.forEach(async (comm) => {
-            await Comment.find({
-                '_id': {
-                    $in: comm.child
-                }
-            }).then((nchild) => {
-                comm.child = nchild;
-                // console.log(comm);
-            })
-            // console.log(comm);
-        })
-        
-        return res.status(201).json({ data: response, success: true });
+        const data = await Promise.all(response.map(async(item) => {
+            var copy = JSON.parse(JSON.stringify(item));
+            copy.nchild = [];
+            const r = await recursiveComments(copy);
+            return r;
+        }))
+        return res.status(201).json({ data: data, success: true });
     }
     catch (err) {
 

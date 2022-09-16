@@ -66,28 +66,32 @@ export function ThreadFeature() {
         }
     }
 
-    const replyFunctionAppearence = (index, status) => {
+    const replyFunctionAppearence = (elem, status) => {
         if (logged) {
-            document.querySelector(`.response-area${index} textarea`).value = "";
+            document.querySelector(`.${elem} textarea`).value = "";
             if (status === 'do') {
-                document.querySelector(`.reply-btn${index}`).style.display = 'none';
-                document.querySelector(`.response-area${index}`).style.display = 'block';
+                document.querySelector(`.${elem} .reply-btn`).style.display = 'none';
+                document.querySelector(`.${elem} .response-area`).style.display = 'block';
             } else if (status === 'undo') {
-                document.querySelector(`.reply-btn${index}`).style.display = 'block';
-                document.querySelector(`.response-area${index}`).style.display = 'none';
+                document.querySelector(`.${elem} .reply-btn`).style.display = 'block';
+                document.querySelector(`.${elem} .response-area`).style.display = 'none';
             }
         } else {
             alert('you must log in first');
         }
     }
 
-    const replyFunction = async (index) => {
+    const replyFunction = async (elem, id) => {
+        console.log(elem)
+        console.log(id)
         if (logged) {
             try {
+                const value = document.getElementById(`textearea${elem}`).value;
+                console.log(value)
                 const payload = {
-                    body: newComment.body,
+                    body: value,
                     thread: threadid,
-                    parent: newComment.parent,
+                    parent: id,
                     username: JSON.parse(localStorage.getItem('user')).data,
                 };
                 await axios.post(`${API_URL}/com/reply`, payload);
@@ -99,7 +103,43 @@ export function ThreadFeature() {
         else {
             alert('you must log in first');
         }
-        replyFunctionAppearence(index, 'undo');
+        replyFunctionAppearence(elem, 'undo');
+    }
+    
+    const Comment = ({ data, curr, par }) => {
+        const cname = curr+'c'+par;
+        return data.map((item, index) => {
+            return (
+                // <div key={index}>
+                //     {item.body}
+                //     {item.nchild && <Comments data={item.nchild}/>}
+                // </div>
+                <div key={`component${index}comm`} className={`${cname}${index}` /*`comment-single${index}`*/} style={{marginLeft: `20px`}}>
+                    {item.body}
+                    <br />by <a href={`/u/${item.creator_username}`}>{item.creator_username} </a>
+                    {
+                        logged &&
+                        <div>
+                            <button className={`reply-btn`} onClick={() => replyFunctionAppearence(`${cname}${index}`, 'do')}>
+                                Reply
+                            </button>
+                            <div className={`response-area`} style={{ display: 'none' }}>
+                                <textarea id={`textearea${cname}${index}`}
+                                    placeholder="Add Your Response" />
+                                <br />
+                                <button onClick={() => replyFunction(`${cname}${index}`, item._id)}>
+                                    Send Reponse
+                                </button>
+                                <button onClick={() => replyFunctionAppearence(`${cname}${index}`, 'undo')}>
+                                    Cancel
+                                </button>
+                            </div>
+                        </div>
+                    }
+                    {item.nchild && <Comment data={item.nchild} curr={cname} par={`${index}`}/>}
+                </div>
+            )
+        })
     }
 
 
@@ -152,10 +192,13 @@ export function ThreadFeature() {
                                         </div>
                                     </div>
                                 }
+                                {JSON.stringify(item.nchild)}
                             </div>
                         )
                     })
                 } */}
+
+                {comments !== [] && <Comment data={comments} curr={''} par={''} />}
             </div>
         </div>
     )
