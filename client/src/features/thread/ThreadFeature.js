@@ -4,7 +4,6 @@ import axios from "axios";
 import { authUser, tokenLogout } from "../auth/authUser";
 import API_URL from "../../globalvar";
 import './Thread.css';
-import CommentComponent from "./CommentComponent";
 
 
 export function ThreadFeature() {
@@ -105,7 +104,7 @@ export function ThreadFeature() {
         }
         replyFunctionAppearence(elem, 'undo');
     }
-    
+
     const Comment = ({ data, curr, par }) => {
         const cname = curr+'c'+par;
         return data.map((item, index) => {
@@ -114,7 +113,10 @@ export function ThreadFeature() {
                 //     {item.body}
                 //     {item.nchild && <Comments data={item.nchild}/>}
                 // </div>
-                <div key={`component${index}comm`} className={`${cname}${index}` /*`comment-single${index}`*/} style={{marginLeft: `20px`}}>
+                <div key={`component${index}comm`} className={`${cname}${index}` /*`comment-single${index}`*/} style={{marginLeft: `70px`}}>
+                    {console.log(cname)}
+                    {console.log(item.body)}
+
                     {item.body}
                     <br />by <a href={`/u/${item.creator_username}`}>{item.creator_username} </a>
                     {
