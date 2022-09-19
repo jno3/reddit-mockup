@@ -70,9 +70,9 @@ export function ThreadFeature() {
             document.querySelector(`.${elem} textarea`).value = "";
             if (status === 'do') {
                 document.querySelector(`.${elem} .reply-btn`).style.display = 'none';
-                document.querySelector(`.${elem} .response-area`).style.display = 'block';
+                document.querySelector(`.${elem} .response-area`).style.display = 'inline';
             } else if (status === 'undo') {
-                document.querySelector(`.${elem} .reply-btn`).style.display = 'block';
+                document.querySelector(`.${elem} .reply-btn`).style.display = 'inline';
                 document.querySelector(`.${elem} .response-area`).style.display = 'none';
             }
         } else {
@@ -105,20 +105,29 @@ export function ThreadFeature() {
         replyFunctionAppearence(elem, 'undo');
     }
 
+    const deleteComment = async (id) => {
+        try {
+            await axios.get(`${API_URL}/com/del/${id}`);
+        } catch (err) {
+
+        }
+    }
+
     const Comment = ({ data, curr, par }) => {
-        const cname = curr+'c'+par;
+        const cname = curr + 'c' + par;
         return data.map((item, index) => {
             return (
-                // <div key={index}>
-                //     {item.body}
-                //     {item.nchild && <Comments data={item.nchild}/>}
-                // </div>
-                <div key={`component${index}comm`} className={`${cname}${index}` /*`comment-single${index}`*/} style={{marginLeft: `70px`}}>
-                    {console.log(cname)}
-                    {console.log(item.body)}
+                <div key={`component${index}comm`} className={`${cname}${index}` /*`comment-single${index}`*/} style={{ marginLeft: `${(cname.length - 1) * 25}px` }}>
+                    {/* {console.log(cname)}
+                    {console.log(item.body)} */}
 
                     {item.body}
-                    <br />by <a href={`/u/${item.creator_username}`}>{item.creator_username} </a>
+                    <br/> {`by `}
+                    {item.creator_username === '[deleted]' ? (
+                        <p style={{display: 'inline'}}>[deleted]</p>
+                    ) : (
+                        <a href={`/u/${item.creator_username}`}>{item.creator_username} </a>
+                    )}
                     {
                         logged &&
                         <div>
@@ -136,9 +145,20 @@ export function ThreadFeature() {
                                     Cancel
                                 </button>
                             </div>
+                            {
+                                JSON.parse(localStorage.getItem('user')).data === item.creator_username &&
+                                <>
+                                    <button>
+                                        Edit
+                                    </button>
+                                    <button onClick={() => deleteComment(item._id)}>
+                                        Delete
+                                    </button>
+                                </>
+                            }
                         </div>
                     }
-                    {item.nchild && <Comment data={item.nchild} curr={cname} par={`${index}`}/>}
+                    {item.nchild && <Comment data={item.nchild} curr={cname} par={`${index}`} />}
                 </div>
             )
         })
@@ -168,38 +188,6 @@ export function ThreadFeature() {
             <button onClick={addNewComment}>Submit</button>
 
             <div>
-
-                {/* {
-                    comments.map((item, i) => {
-                        return (
-                            <div key={`component${i}comm`} className="comment-single">
-                                {item.body}
-                                <br />by <a href={`/u/${item.creator_username}`}>{item.creator_username} </a>
-                                {
-                                    logged &&
-                                    <div>
-                                        <button className={`reply-btn${i}`} onClick={() => replyFunctionAppearence(i, 'do')}>
-                                            Reply
-                                        </button>
-                                        <div className={`response-area${i}`} style={{ display: 'none' }}>
-                                            <textarea onChange={(e) => setNewComment({ body: e.target.value, parent: item._id })}
-                                                placeholder="Add Your Response" />
-                                            <br />
-                                            <button onClick={() => replyFunction(i)}>
-                                                Send Reponse
-                                            </button>
-                                            <button onClick={() => replyFunctionAppearence(i, 'undo')}>
-                                                Cancel
-                                            </button>
-                                        </div>
-                                    </div>
-                                }
-                                {JSON.stringify(item.nchild)}
-                            </div>
-                        )
-                    })
-                } */}
-
                 {comments !== [] && <Comment data={comments} curr={''} par={''} />}
             </div>
         </div>

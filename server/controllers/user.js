@@ -122,10 +122,15 @@ const getUserThreadsAndComments = async (req, res) => {
         });
 
 
-        const data_comments = comments.map((c) => {
-            return { body: c.body, sub_name: c.sub_name, thread: c.thread };
+        const d_comments = comments.map((c) => {
+            if (c.creator_username !== '[deleted]') {
+                return { body: c.body, sub_name: c.sub_name, thread: c.thread };
+            }
         });
 
+        const data_comments = d_comments.filter((element) => {
+            return element !== undefined;
+        })
         const response = { threads: data_threads, comments: data_comments };
 
         return res.status(200).json({ data: response, success: true });
