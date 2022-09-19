@@ -65,24 +65,62 @@ export function ThreadFeature() {
         }
     }
 
-    const replyFunctionAppearence = (elem, status) => {
+    const replyFunctionAppearence = (elem, status, obj) => {
         if (logged) {
             document.querySelector(`.${elem} textarea`).value = "";
             if (status === 'do') {
                 document.querySelector(`.${elem} .reply-btn`).style.display = 'none';
+                try {
+                    document.querySelector(`.${elem} .btn-container-2`).style.display = 'none';
+                } catch (err) {
+
+                }
                 document.querySelector(`.${elem} .response-area`).style.display = 'inline';
             } else if (status === 'undo') {
                 document.querySelector(`.${elem} .reply-btn`).style.display = 'inline';
+                try {
+                    document.querySelector(`.${elem} .btn-container-2`).style.display = 'inline';
+                } catch (err) {
+
+                }
                 document.querySelector(`.${elem} .response-area`).style.display = 'none';
+            }else if (status === 'do-edit'){
+                document.querySelector(`.${elem} .reply-btn`).style.display = 'none';
+                document.querySelector(`.${elem} .btn-container-2`).style.display = 'none';
+                document.querySelector(`.${elem} .body-content`).style.display = 'none';
+                document.querySelector(`.${elem} .edit textarea`).value = obj.body;
+                document.querySelector(`.${elem} .edit`).style.display = 'inline';
+                document.querySelector(`.${elem} .response-area-2`).style.display = 'inline';
+            }else if (status === 'undo-edit'){
+                document.querySelector(`.${elem} .reply-btn`).style.display = 'inline';
+                document.querySelector(`.${elem} .btn-container-2`).style.display = 'inline';
+                document.querySelector(`.${elem} .body-content`).style.display = 'inline';
+                // document.querySelector(`.${elem} .edit textarea`).value = obj.body;
+                document.querySelector(`.${elem} .edit`).style.display = 'none';
+                document.querySelector(`.${elem} .response-area-2`).style.display = 'none';
             }
         } else {
             alert('you must log in first');
         }
     }
 
+    const editComment = async (id, elem) => {
+        if(logged){
+            try{
+                const textarea_value = document.querySelector(`.${elem} .edit textarea`).value;
+                console.log(id);
+                await axios.post(`${API_URL}/com/update`, {id: id, value: textarea_value});
+            }
+            catch(err){
+
+            }
+        }else {
+            alert('you must log in first');
+        }
+        replyFunctionAppearence(elem, 'undo-edit');
+    }
+
     const replyFunction = async (elem, id) => {
-        console.log(elem)
-        console.log(id)
         if (logged) {
             try {
                 const value = document.getElementById(`textearea${elem}`).value;
@@ -120,11 +158,15 @@ export function ThreadFeature() {
                 <div key={`component${index}comm`} className={`${cname}${index}` /*`comment-single${index}`*/} style={{ marginLeft: `${(cname.length - 1) * 25}px` }}>
                     {/* {console.log(cname)}
                     {console.log(item.body)} */}
-
-                    {item.body}
-                    <br/> {`by `}
+                    <div className="edit" style={{ display: 'none' }}>
+                        <textarea style={{ display: 'inline' }} />
+                    </div>
+                    <div className="body-content" style={{ display: 'inline' }}>
+                        {item.body}
+                    </div>
+                    <br /> {`by `}
                     {item.creator_username === '[deleted]' ? (
-                        <p style={{display: 'inline'}}>[deleted]</p>
+                        <p style={{ display: 'inline' }}>[deleted]</p>
                     ) : (
                         <a href={`/u/${item.creator_username}`}>{item.creator_username} </a>
                     )}
@@ -138,7 +180,7 @@ export function ThreadFeature() {
                                 <textarea id={`textearea${cname}${index}`}
                                     placeholder="Add Your Response" />
                                 <br />
-                                <button onClick={() => replyFunction(`${cname}${index}`, item._id)}>
+                                <button className="reply-btn" onClick={() => replyFunction(`${cname}${index}`, item._id)}>
                                     Send Reponse
                                 </button>
                                 <button onClick={() => replyFunctionAppearence(`${cname}${index}`, 'undo')}>
@@ -147,15 +189,23 @@ export function ThreadFeature() {
                             </div>
                             {
                                 JSON.parse(localStorage.getItem('user')).data === item.creator_username &&
-                                <>
-                                    <button>
+                                <div className="btn-container-2" style={{ display: 'inline' }}>
+                                    <button onClick={() => replyFunctionAppearence(`${cname}${index}`, 'do-edit', item)}>
                                         Edit
                                     </button>
                                     <button onClick={() => deleteComment(item._id)}>
                                         Delete
                                     </button>
-                                </>
+                                </div>
                             }
+                            <div className="response-area-2" style={{ display: 'none' }}>
+                                <button onClick={() => editComment(item._id,`${cname}${index}`)}>
+                                    Save Changes
+                                </button>
+                                <button onClick={() => replyFunctionAppearence(`${cname}${index}`, 'undo-edit', item)}>
+                                    Cancel
+                                </button>
+                            </div>
                         </div>
                     }
                     {item.nchild && <Comment data={item.nchild} curr={cname} par={`${index}`} />}

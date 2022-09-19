@@ -106,4 +106,22 @@ const deleteComment = async (req, res) => {
     return res.status(400).json({ success: false });
 }
 
-export { addComment, addSubComment, getComments, deleteComment };
+const updateComment = async (req, res) => {
+    try {
+        const { id, value } = req.body;
+        await Comment.updateOne(
+            { _id: id },
+            {
+                $set: {
+                    body: value
+                }
+            }
+        )
+        return res.status(201).json({ success: true });
+    } catch (err) {
+
+    }
+    return res.status(400).json({ success: false });
+}
+
+export { addComment, addSubComment, getComments, deleteComment, updateComment };
