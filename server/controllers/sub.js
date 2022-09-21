@@ -29,7 +29,7 @@ const getAllThreadsSub = async (req, res) => {
         return res.status(201).json({ data: response, success: true });
     }
     catch(err){
-        console.log(err);
+        
     }
     return res.status(400).json({ success: false });
 }

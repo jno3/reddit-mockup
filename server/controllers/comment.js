@@ -31,10 +31,8 @@ const addSubComment = async (req, res) => {
         const { name } = await Sub.findOne({ _id: thread.sub });
         const response = await Comment.create({ body: data.body, creator: user._id, creator_username: user.username, parent: parent._id, thread: thread._id, sub_name: name });
         await parent.updateOne({ $push: { child: response._id } });
-        // await thread.updateOne({ $push: { comment: response } });
         await user.updateOne({ $push: { comment: response._id } });
         return res.status(201).json({ success: true });
-        // return res.status(201).send('aaa');
     }
     catch (err) {
         console.log(err);
@@ -43,7 +41,6 @@ const addSubComment = async (req, res) => {
 }
 
 const recursiveComments = async (item) => {
-    // console.log(item)
     if (item.child) {
         const children = await Comment.find({
             '_id': {
@@ -53,8 +50,6 @@ const recursiveComments = async (item) => {
         await Promise.all(children.map(async (child) => {
             const chd = JSON.parse(JSON.stringify(child));
             chd.nchild = [];
-            // console.log(item)
-            // console.log(child)
             item.nchild.push(chd);
             return await recursiveComments(chd);
         }))

@@ -20,6 +20,7 @@ export function ThreadFeature() {
     const [comments, setComments] = useState([]);
 
     const [threadContent, setThreadContent] = useState({
+        id: '',
         title: '',
         body: '',
         creator: ''
@@ -29,7 +30,7 @@ export function ThreadFeature() {
         const getThreadContent = async () => {
             const response = await axios.get(`${API_URL}/thread/${threadid}`);
             const data = response.data.data;
-            setThreadContent({ title: data.title, body: data.body, creator: data.creator });
+            setThreadContent({ id: data.id, title: data.title, body: data.body, creator: data.creator });
         }
         getThreadContent();
 
@@ -84,14 +85,14 @@ export function ThreadFeature() {
 
                 }
                 document.querySelector(`.${elem} .response-area`).style.display = 'none';
-            }else if (status === 'do-edit'){
+            } else if (status === 'do-edit') {
                 document.querySelector(`.${elem} .reply-btn`).style.display = 'none';
                 document.querySelector(`.${elem} .btn-container-2`).style.display = 'none';
                 document.querySelector(`.${elem} .body-content`).style.display = 'none';
                 document.querySelector(`.${elem} .edit textarea`).value = obj.body;
                 document.querySelector(`.${elem} .edit`).style.display = 'inline';
                 document.querySelector(`.${elem} .response-area-2`).style.display = 'inline';
-            }else if (status === 'undo-edit'){
+            } else if (status === 'undo-edit') {
                 document.querySelector(`.${elem} .reply-btn`).style.display = 'inline';
                 document.querySelector(`.${elem} .btn-container-2`).style.display = 'inline';
                 document.querySelector(`.${elem} .body-content`).style.display = 'inline';
@@ -105,16 +106,15 @@ export function ThreadFeature() {
     }
 
     const editComment = async (id, elem) => {
-        if(logged){
-            try{
+        if (logged) {
+            try {
                 const textarea_value = document.querySelector(`.${elem} .edit textarea`).value;
-                console.log(id);
-                await axios.post(`${API_URL}/com/update`, {id: id, value: textarea_value});
+                await axios.post(`${API_URL}/com/update`, { id: id, value: textarea_value });
             }
-            catch(err){
+            catch (err) {
 
             }
-        }else {
+        } else {
             alert('you must log in first');
         }
         replyFunctionAppearence(elem, 'undo-edit');
@@ -124,7 +124,6 @@ export function ThreadFeature() {
         if (logged) {
             try {
                 const value = document.getElementById(`textearea${elem}`).value;
-                console.log(value)
                 const payload = {
                     body: value,
                     thread: threadid,
@@ -171,42 +170,47 @@ export function ThreadFeature() {
                         <a href={`/u/${item.creator_username}`}>{item.creator_username} </a>
                     )}
                     {
-                        logged &&
-                        <div>
-                            <button className={`reply-btn`} onClick={() => replyFunctionAppearence(`${cname}${index}`, 'do')}>
-                                Reply
-                            </button>
-                            <div className={`response-area`} style={{ display: 'none' }}>
-                                <textarea id={`textearea${cname}${index}`}
-                                    placeholder="Add Your Response" />
-                                <br />
-                                <button className="reply-btn" onClick={() => replyFunction(`${cname}${index}`, item._id)}>
-                                    Send Reponse
+                        logged ? (
+                            <div>
+                                <button className={`reply-btn`} onClick={() => replyFunctionAppearence(`${cname}${index}`, 'do')}>
+                                    Reply
                                 </button>
-                                <button onClick={() => replyFunctionAppearence(`${cname}${index}`, 'undo')}>
-                                    Cancel
-                                </button>
-                            </div>
-                            {
-                                JSON.parse(localStorage.getItem('user')).data === item.creator_username &&
-                                <div className="btn-container-2" style={{ display: 'inline' }}>
-                                    <button onClick={() => replyFunctionAppearence(`${cname}${index}`, 'do-edit', item)}>
-                                        Edit
+                                <div className={`response-area`} style={{ display: 'none' }}>
+                                    <textarea id={`textearea${cname}${index}`}
+                                        placeholder="Add Your Response" />
+                                    <br />
+                                    <button className="reply-btn" onClick={() => replyFunction(`${cname}${index}`, item._id)}>
+                                        Send Reponse
                                     </button>
-                                    <button onClick={() => deleteComment(item._id)}>
-                                        Delete
+                                    <button onClick={() => replyFunctionAppearence(`${cname}${index}`, 'undo')}>
+                                        Cancel
                                     </button>
                                 </div>
-                            }
-                            <div className="response-area-2" style={{ display: 'none' }}>
-                                <button onClick={() => editComment(item._id,`${cname}${index}`)}>
-                                    Save Changes
-                                </button>
-                                <button onClick={() => replyFunctionAppearence(`${cname}${index}`, 'undo-edit', item)}>
-                                    Cancel
-                                </button>
+                                {
+                                    JSON.parse(localStorage.getItem('user')).data === item.creator_username &&
+                                    <div className="btn-container-2" style={{ display: 'inline' }}>
+                                        <button onClick={() => replyFunctionAppearence(`${cname}${index}`, 'do-edit', item)}>
+                                            Edit
+                                        </button>
+                                        <button onClick={() => deleteComment(item._id)}>
+                                            Delete
+                                        </button>
+                                    </div>
+                                }
+                                <div className="response-area-2" style={{ display: 'none' }}>
+                                    <button onClick={() => editComment(item._id, `${cname}${index}`)}>
+                                        Save Changes
+                                    </button>
+                                    <button onClick={() => replyFunctionAppearence(`${cname}${index}`, 'undo-edit', item)}>
+                                        Cancel
+                                    </button>
+                                </div>
                             </div>
-                        </div>
+                        ) : (
+                            <div>
+                                <br />
+                            </div>
+                        )
                     }
                     {item.nchild && <Comment data={item.nchild} curr={cname} par={`${index}`} />}
                 </div>
@@ -214,6 +218,50 @@ export function ThreadFeature() {
         })
     }
 
+    const editThreadAppearence = (type, data) => {
+        if (type === 'do') {
+            document.querySelector('.thread-container .edit-thread-btn').style.display = 'none';
+            document.querySelector('.thread-container .data').style.display = 'none';
+            document.querySelector('.thread-container .txt-edit-post textarea').value = data;
+            document.querySelector('.thread-container .txt-edit-post').style.display = 'block';
+        }
+        if (type === 'undo') {
+            document.querySelector('.thread-container .edit-thread-btn').style.display = 'block';
+            document.querySelector('.thread-container .data').style.display = 'block';
+            document.querySelector('.thread-container .txt-edit-post').style.display = 'none';
+        }
+    }
+
+    const editThread = async(id) => {
+        if(logged){
+            try{
+                const value = document.querySelector('.thread-container .txt-edit-post textarea').value;
+                const payload = {id: id, value: value};
+                await axios.post(`${API_URL}/thread/edit`, payload);
+            }catch(err){
+
+            }
+        }else{
+            alert('you must log in first');
+        }
+    }
+
+    const deleteThread = async(obj) => {
+        if(localStorage.getItem('user')){
+            if(JSON.parse(localStorage.getItem('user')).data === obj.creator && logged){
+                try{
+                    await axios.delete(`${API_URL}/thread/delete`, {
+                        data: {
+                            obj
+                        }
+                    });
+                }
+                catch(err){
+
+                }
+            }
+        }
+    }
 
     return (
         <div className="thread-container">
@@ -226,9 +274,38 @@ export function ThreadFeature() {
                 </p>
             </div>
             <div className="thread-content">
-                <p>
+                {localStorage.getItem('user') ? (
+                    (
+                        <div className="edit-thread-btn">
+                            {
+                                threadContent.creator === JSON.parse(localStorage.getItem('user')).data &&
+                                <div style={{ display: 'block' }}>
+                                    <button onClick={() => editThreadAppearence('do', threadContent.body)}>
+                                        Edit
+                                    </button>
+                                    <button onClick={() => deleteThread(threadContent)}>
+                                        Delete
+                                    </button>
+                                </div>
+                            }
+                        </div>
+                    )
+                ) : (
+                    ''
+                )}
+                <div className="txt-edit-post" style={{ display: 'none' }}>
+                    <textarea />
+                    <br/>
+                    <button onClick={() => editThread(threadContent.id)}>
+                        Save Changes
+                    </button>
+                    <button onClick={() => editThreadAppearence('undo')}>
+                        Cancel
+                    </button>
+                </div>
+                <div className="data">
                     {threadContent.body}
-                </p>
+                </div>
             </div>
             <div className="comment-area">
                 <textarea onChange={(e) => setNewComment({ ...newComment, body: e.target.value })}

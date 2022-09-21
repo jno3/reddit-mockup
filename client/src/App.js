@@ -23,7 +23,7 @@ function App() {
           <Route path='r/:subname' element={<SubFeature />}/>
           <Route path='r/:subname/newthread' element={<ThreadPage />}/>
           <Route path='r/:subname/:threadid' element={<ThreadFeature />}/>
-          <Route path='u/:username' element={<ProfilePage/>}/>        
+          <Route path='u/:username' element={<ProfilePage/>}/>
           <Route path='notfound' element={<NotFoundPage/>}/>
         </Route>
       </Routes>

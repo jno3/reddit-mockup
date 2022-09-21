@@ -26,8 +26,8 @@ const getThread = async (req, res) => {
         const { threadid } = req.params;
         const thread = await Thread.findOne({ _id: threadid });
         const user = await User.findOne({ _id: thread.creator });
-        const response = { title: thread.title, body: thread.body, creator: user.username }
-        return res.status(201).json({ data: response, success: true });
+        const response = { id: thread._id, title: thread.title, body: thread.body, creator: user.username }
+        return res.status(200).json({ data: response, success: true });
     }
     catch (err) {
         console.log(err);
@@ -46,4 +46,34 @@ const getAllThreads = async (req, res) => {
     return res.status(400).json({ success: false });
 }
 
-export { addThread, getThread, getAllThreads };
+const editThread = async (req, res) => {
+    try {
+        const { id, value } = req.body
+        await Thread.updateOne(
+            { _id: id },
+            {
+                $set: {
+                    body: value
+                }
+            }
+        )
+        return res.status(201).json({ success: true });
+    } catch (err) {
+        console.log(err);
+    }
+    return res.status(400).json({ success: false });
+}
+
+const deleteThread = async (req, res) => {
+    try {
+        const id = req.body.obj.id;
+        await Thread.findOneAndDelete({_id: id});
+        return res.status(201).json({ success: true });
+    }
+    catch (err) {
+
+    }
+    return res.status(400).json({ success: false });
+}
+
+export { addThread, getThread, getAllThreads, editThread, deleteThread };
