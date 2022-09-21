@@ -12,23 +12,27 @@ export function NavbarPage() {
 
     const logoutFunction = async () => {
         authUser().then(async (response) => {
-            const r = await tokenLogout(response)
-            if (r) {
-                console.log(response)
-                try {
-                    await axios.get(`${API_URL}/user/logout`).then(
-                        localStorage.removeItem('user')
-                    ).catch((err) => {
-                        console.log(err);
-                    });
-                    alert('logged out successfully');
+            try {
+                const r = await tokenLogout(response)
+                if (r) {
+                    try {
+                        await axios.get(`${API_URL}/user/logout`).then(
+                            localStorage.removeItem('user')
+                        ).catch((err) => {
+                            console.log(err);
+                        });
+                        alert('logged out successfully');
+                        document.location.href = "/";
+                    }
+                    catch (err) {
+                        document.location.href = "/";
+                    }
+                } else {
                     document.location.href = "/";
                 }
-                catch (err) {
-                    console.log(err);
-                }
-            } else {
-                document.location.href = "/";
+            }
+            catch (err) {
+
             }
         })
 
@@ -56,7 +60,7 @@ export function NavbarPage() {
             setSubs(data);
         }
         catch (err) {
-            console.log(err);
+
         }
 
     }

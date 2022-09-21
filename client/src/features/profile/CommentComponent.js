@@ -3,7 +3,6 @@ import './Component.css';
 
 
 export function CommentComponent(logged, data) {
-    console.log(data);
     return (
         <div key={'comments'}>
             {data.map((item, i) => {

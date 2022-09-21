@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import { tokenLogout } from "../auth/authUser";
 import API_URL from "../../globalvar";
@@ -27,6 +27,7 @@ export function ThreadPage() {
                 subname: subname
             };
             await axios.post(`${API_URL}/thread`, payload);
+            document.location.href = `/r/${subname}`;
         }
         catch (err) {
             try {
@@ -44,14 +45,17 @@ export function ThreadPage() {
                 <div className="user-input">
                     <input
                         onChange={(e) => setNewThread({ ...newThread, title: e.target.value })}
-                    placeholder="Thread Title" />
+                        placeholder="Thread Title" />
                     <br />
                     <textarea
                         onChange={(e) => setNewThread({ ...newThread, body: e.target.value })}
-                    placeholder="Thread Text"/>
+                        placeholder="Thread Text" />
                 </div>
                 <div className="container-btn">
                     <button onClick={addNewThread}>Create Thread</button>
+                    <Link to={`/r/${subname}/`}>
+                        <button>Cancel</button>
+                    </Link>
                 </div>
             </div>
         </div>

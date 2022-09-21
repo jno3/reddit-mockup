@@ -7,6 +7,7 @@ export const authUser = async () => {
         return result.data;
     }
     catch (err) {
+        console.clear();
         return err.response.data;
     }
 }
@@ -32,7 +33,6 @@ export const tokenLogout = async (data) => {
         return false;
     }
     return true;
-    // document.location.href = "/";
 }
 
 export const checkSub = async(data) => {

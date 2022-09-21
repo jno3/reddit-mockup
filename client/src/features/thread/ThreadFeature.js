@@ -29,7 +29,6 @@ export function ThreadFeature() {
     useEffect(() => {
         const getThreadContent = async () => {
             try {
-                console.log(subname)
                 const response = await axios.get(`${API_URL}/thread/${subname}/${threadid}`);
                 const data = response.data.data;
                 setThreadContent({ id: data.id, title: data.title, body: data.body, creator: data.creator });
@@ -55,7 +54,7 @@ export function ThreadFeature() {
         tokenLogout(authUser()).then((response) => {
             setLogged(response);
         })
-    }, [threadid]);
+    }, [threadid, subname]);
 
     const addNewComment = async () => {
         try {
@@ -254,6 +253,7 @@ export function ThreadFeature() {
                 const value = document.querySelector('.thread-container .txt-edit-post textarea').value;
                 const payload = { id: id, value: value };
                 await axios.post(`${API_URL}/thread/edit`, payload);
+                document.location.reload();
             } catch (err) {
                 alert('your thread couldn\'t be added');
             }
