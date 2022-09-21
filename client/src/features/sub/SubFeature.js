@@ -19,15 +19,20 @@ export function SubFeature() {
     const { subname } = useParams()
 
     var username = '';
-    if(JSON.parse(localStorage.getItem('user'))){
+    if (JSON.parse(localStorage.getItem('user'))) {
         username = JSON.parse(localStorage.getItem('user')).data;
     }
 
     useEffect(() => {
         const getSubContent = async () => {
-            const response = await axios.get(`${API_URL}/sub/${subname}`);
-            const data = response.data.data;
-            setThreads(data);
+            try {
+                const response = await axios.get(`${API_URL}/sub/${subname}`);
+                const data = response.data.data;
+                setThreads(data);
+            }
+            catch(err){
+                document.location.href = "/notfound";
+            }
         }
         getSubContent();
 
@@ -56,9 +61,9 @@ export function SubFeature() {
     const joinSub = async () => {
         if (logged.loggedin) {
             await axios.post(`${API_URL}/user/join`, { username: username, subname: subname, join: !logged.subbed })
-            .then(() => {
-                window.location.reload();
-            })
+                .then(() => {
+                    window.location.reload();
+                })
         }
     }
 

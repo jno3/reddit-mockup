@@ -23,8 +23,11 @@ const addThread = async (req, res) => {
 
 const getThread = async (req, res) => {
     try {
-        const { threadid } = req.params;
+        const { subname, threadid } = req.params;
         const thread = await Thread.findOne({ _id: threadid });
+        if(subname !== thread.sub_name){
+            throw '';
+        }
         const user = await User.findOne({ _id: thread.creator });
         const response = { id: thread._id, title: thread.title, body: thread.body, creator: user.username }
         return res.status(200).json({ data: response, success: true });

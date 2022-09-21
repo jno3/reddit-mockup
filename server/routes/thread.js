@@ -4,7 +4,7 @@ const router = Router();
 
 router.route('/').post(addThread);
 router.route('/all').get(getAllThreads);
-router.route('/:threadid').get(getThread);
+router.route('/:subname/:threadid').get(getThread);
 router.route('/delete').delete(deleteThread);
 router.route('/edit').post(editThread);
 

@@ -10,7 +10,7 @@ export function ThreadFeature() {
 
     const [logged, setLogged] = useState();
 
-    const { threadid } = useParams();
+    const { subname, threadid } = useParams();
 
     const [newComment, setNewComment] = useState({
         body: '',
@@ -28,16 +28,27 @@ export function ThreadFeature() {
 
     useEffect(() => {
         const getThreadContent = async () => {
-            const response = await axios.get(`${API_URL}/thread/${threadid}`);
-            const data = response.data.data;
-            setThreadContent({ id: data.id, title: data.title, body: data.body, creator: data.creator });
+            try {
+                console.log(subname)
+                const response = await axios.get(`${API_URL}/thread/${subname}/${threadid}`);
+                const data = response.data.data;
+                setThreadContent({ id: data.id, title: data.title, body: data.body, creator: data.creator });
+            }
+            catch (err) {
+                document.location.href = "/notfound";
+            }
         }
         getThreadContent();
 
         const getCommentsContent = async () => {
-            const response = await axios.get(`${API_URL}/com/${threadid}`);
-            const data = response.data.data;
-            setComments(data);
+            try {
+                const response = await axios.get(`${API_URL}/com/${threadid}`);
+                const data = response.data.data;
+                setComments(data);
+            }
+            catch (err) {
+                document.location.href = "/notfound";
+            }
         }
 
         getCommentsContent();
@@ -54,7 +65,12 @@ export function ThreadFeature() {
                 parent: newComment.parent,
                 username: JSON.parse(localStorage.getItem('user')).data,
             };
-            await axios.post(`${API_URL}/com/`, payload);
+            try {
+                await axios.post(`${API_URL}/com/`, payload);
+            }
+            catch (err) {
+                alert('your comment couldn\'t be added');
+            }
         }
         catch (err) {
             try {
@@ -112,7 +128,7 @@ export function ThreadFeature() {
                 await axios.post(`${API_URL}/com/update`, { id: id, value: textarea_value });
             }
             catch (err) {
-
+                alert('your comment couldn\'t be added');
             }
         } else {
             alert('you must log in first');
@@ -133,7 +149,7 @@ export function ThreadFeature() {
                 await axios.post(`${API_URL}/com/reply`, payload);
             }
             catch (err) {
-
+                alert('your reply coultn\'t be added');
             }
         }
         else {
@@ -146,7 +162,7 @@ export function ThreadFeature() {
         try {
             await axios.get(`${API_URL}/com/del/${id}`);
         } catch (err) {
-
+            alert('your comment couldn\'t be deleted');
         }
     }
 
@@ -232,32 +248,32 @@ export function ThreadFeature() {
         }
     }
 
-    const editThread = async(id) => {
-        if(logged){
-            try{
+    const editThread = async (id) => {
+        if (logged) {
+            try {
                 const value = document.querySelector('.thread-container .txt-edit-post textarea').value;
-                const payload = {id: id, value: value};
+                const payload = { id: id, value: value };
                 await axios.post(`${API_URL}/thread/edit`, payload);
-            }catch(err){
-
+            } catch (err) {
+                alert('your thread couldn\'t be added');
             }
-        }else{
+        } else {
             alert('you must log in first');
         }
     }
 
-    const deleteThread = async(obj) => {
-        if(localStorage.getItem('user')){
-            if(JSON.parse(localStorage.getItem('user')).data === obj.creator && logged){
-                try{
+    const deleteThread = async (obj) => {
+        if (localStorage.getItem('user')) {
+            if (JSON.parse(localStorage.getItem('user')).data === obj.creator && logged) {
+                try {
                     await axios.delete(`${API_URL}/thread/delete`, {
                         data: {
                             obj
                         }
                     });
                 }
-                catch(err){
-
+                catch (err) {
+                    alert('your thread couldn\'t be deleted');
                 }
             }
         }
@@ -295,7 +311,7 @@ export function ThreadFeature() {
                 )}
                 <div className="txt-edit-post" style={{ display: 'none' }}>
                     <textarea />
-                    <br/>
+                    <br />
                     <button onClick={() => editThread(threadContent.id)}>
                         Save Changes
                     </button>
